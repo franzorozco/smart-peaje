@@ -48,6 +48,19 @@ function createMessageId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
+const CATEGORIAS_LABELS: Record<string, string> = {
+  moto: 'Moto',
+  auto: 'Auto',
+  minibus: 'Minibús',
+  camion: 'Camión',
+  bus: 'Bus',
+};
+
+function formatCategoria(cat: string): string {
+  const key = (cat || '').trim().toLowerCase();
+  return CATEGORIAS_LABELS[key] ?? cat;
+}
+
 function formatFecha(iso: string): string {
   try {
     const date = new Date(iso);
@@ -275,7 +288,7 @@ export default function ConsultaScreen() {
             <View style={styles.infoBox}>
               <Text style={styles.infoTitle}>Vehículo</Text>
               <Text style={styles.infoLine}>
-                {datos.vehiculo.placa} · {datos.vehiculo.categoria} · {datos.vehiculo.ejes} ejes ·{' '}
+                {datos.vehiculo.placa} · {formatCategoria(datos.vehiculo.categoria)} · {datos.vehiculo.ejes} ejes ·{' '}
                 {datos.vehiculo.activo ? 'Activo' : 'Inactivo'}
               </Text>
             </View>
@@ -289,7 +302,7 @@ export default function ConsultaScreen() {
               </View>
               <Text style={styles.infoLine}>Caseta: {ultimoPaso.caseta}</Text>
               <Text style={styles.infoLine}>
-                Categoría: {ultimoPaso.categoria} · Tarifa: Bs {ultimoPaso.monto}
+                Categoría: {formatCategoria(ultimoPaso.categoria)} · Tarifa: Bs {ultimoPaso.monto}
               </Text>
               <Text style={styles.infoMuted}>Fecha: {formatFecha(ultimoPaso.fecha)}</Text>
             </View>

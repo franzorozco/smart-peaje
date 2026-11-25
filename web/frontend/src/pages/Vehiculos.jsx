@@ -13,6 +13,7 @@ import Modal from '../components/Modal'
 import { useToast } from '../components/toastContext'
 import {
   CATEGORIAS,
+  esVehiculoPesado,
   etiquetaCategoria,
   extraerErrorApi,
   formatBs,
@@ -36,6 +37,7 @@ export default function Vehiculos() {
   const [busquedaInput, setBusquedaInput] = useState('')
   const [busqueda, setBusqueda] = useState('')
   const [vehiculos, setVehiculos] = useState([])
+  const [tarifas, setTarifas] = useState([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState('')
 
@@ -54,6 +56,35 @@ export default function Vehiculos() {
     }, 300)
     return () => clearTimeout(timer)
   }, [busquedaInput])
+
+  useEffect(() => {
+    let activo = true
+    ;(async () => {
+      try {
+        const res = await api.get('tarifas/')
+        if (activo && Array.isArray(res.data)) {
+          setTarifas(res.data)
+        }
+      } catch {
+        // Silencioso si no se pueden listar tarifas
+      }
+    })()
+    return () => {
+      activo = false
+    }
+  }, [])
+
+  const obtenerTarifaVehiculo = (categoria, ejes) => {
+    const exacta = tarifas.find(
+      (t) => t.categoria === categoria && Number(t.ejes) === Number(ejes)
+    )
+    if (exacta) return exacta.monto
+    if (!esVehiculoPesado(categoria)) {
+      const base = tarifas.find((t) => t.categoria === categoria)
+      if (base) return base.monto
+    }
+    return null
+  }
 
   const cargarVehiculos = useCallback(async () => {
     const params = busqueda ? { search: busqueda } : {}
@@ -223,6 +254,7 @@ export default function Vehiculos() {
                 <th>Propietario</th>
                 <th>Categoría</th>
                 <th>Ejes</th>
+                <th>Tarifa/paso</th>
                 <th>Saldo</th>
                 <th>Estado</th>
                 {esAdmin && <th className="text-right">Acciones</th>}
@@ -231,18 +263,20 @@ export default function Vehiculos() {
             <tbody>
               {cargando ? (
                 <tr>
-                  <td colSpan={esAdmin ? 7 : 6} className="table-empty">
+                  <td colSpan={esAdmin ? 8 : 7} className="table-empty">
                     Cargando vehículos...
                   </td>
                 </tr>
               ) : vehiculos.length === 0 ? (
                 <tr>
-                  <td colSpan={esAdmin ? 7 : 6} className="table-empty">
+                  <td colSpan={esAdmin ? 8 : 7} className="table-empty">
                     No se encontraron vehículos registrados.
                   </td>
                 </tr>
               ) : (
-                vehiculos.map((v) => (
+                vehiculos.map((v) => {
+                  const tarifaPaso = obtenerTarifaVehiculo(v.categoria, v.ejes)
+                  return (
                   <tr key={v.id}>
                     <td>
                       <strong className="mono-plate">{v.placa}</strong>
@@ -250,6 +284,9 @@ export default function Vehiculos() {
                     <td>{v.propietario}</td>
                     <td>{etiquetaCategoria(v.categoria)}</td>
                     <td>{v.ejes}</td>
+                    <td className="text-green">
+                      {tarifaPaso !== null ? formatBs(tarifaPaso) : '—'}
+                    </td>
                     <td>
                       <span className={Number(v.saldo) <= 0 ? 'text-amber' : ''}>
                         {formatBs(v.saldo)}
@@ -281,7 +318,8 @@ export default function Vehiculos() {
                       </td>
                     )}
                   </tr>
-                ))
+                  )
+                })
               )}
             </tbody>
           </table>
@@ -372,13 +410,18 @@ export default function Vehiculos() {
 
           <div className="form-grid-2">
             <div className="field">
-              <label htmlFor="veh-categoria">Categoría</label>
+              <label htmlFor="veh-categoria">Categoría (M2)</label>
               <select
                 id="veh-categoria"
                 value={form.categoria}
-                onChange={(e) =>
-                  setForm((p) => ({ ...p, categoria: e.target.value }))
-                }
+                onChange={(e) => {
+                  const nuevaCat = e.target.value
+                  setForm((p) => ({
+                    ...p,
+                    categoria: nuevaCat,
+                    ejes: esVehiculoPesado(nuevaCat) ? p.ejes : 2,
+                  }))
+                }}
               >
                 {CATEGORIAS.map((cat) => (
                   <option key={cat.value} value={cat.value}>
@@ -389,12 +432,14 @@ export default function Vehiculos() {
             </div>
 
             <div className="field">
-              <label htmlFor="veh-ejes">Ejes (2 a 7)</label>
+              <label htmlFor="veh-ejes">
+                Ejes (M3){esVehiculoPesado(form.categoria) ? ' · 2 a 7' : ' · fijo 2'}
+              </label>
               <input
                 id="veh-ejes"
                 type="number"
                 min="2"
-                max="7"
+                max={esVehiculoPesado(form.categoria) ? '7' : '2'}
                 step="1"
                 value={form.ejes}
                 onChange={(e) =>
@@ -404,6 +449,35 @@ export default function Vehiculos() {
               />
             </div>
           </div>
+
+          {(() => {
+            const montoEst = obtenerTarifaVehiculo(form.categoria, form.ejes)
+            return (
+              <div
+                className="text-sm"
+                style={{
+                  padding: '0.65rem 0.85rem',
+                  borderRadius: '8px',
+                  background: 'rgba(34, 197, 94, 0.1)',
+                  border: '1px solid rgba(34, 197, 94, 0.25)',
+                }}
+              >
+                <strong>Tarifa por paso: </strong>
+                {montoEst !== null ? (
+                  <span className="text-green">
+                    <strong>{formatBs(montoEst)}</strong>
+                  </span>
+                ) : (
+                  <span className="text-amber">Sin tarifa configurada para esta combinación</span>
+                )}
+                <div className="text-xs muted" style={{ marginTop: '0.2rem' }}>
+                  {esVehiculoPesado(form.categoria)
+                    ? `Vehículo pesado: se cobra por categoría (${etiquetaCategoria(form.categoria)}) y ${form.ejes} ejes. Pasajeros: informativo (sin recargo).`
+                    : `Vehículo liviano: tarifa fija por categoría (${etiquetaCategoria(form.categoria)}). Pasajeros: informativo (sin recargo).`}
+                </div>
+              </div>
+            )
+          })()}
 
           <label className="checkbox-row">
             <input

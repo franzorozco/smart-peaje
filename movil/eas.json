@@ -13,8 +13,8 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://api.smartpeaje.example.com/api/v1",
-        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "000000000000-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com"
+        "EXPO_PUBLIC_API_URL": "https://peaje-backend.onrender.com/api/v1",
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "43430452374-e8nudeoielvkiqk2qolqop4sj60gt2lk.apps.googleusercontent.com"
       }
     }
   }

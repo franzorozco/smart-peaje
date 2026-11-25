@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { ImageOff } from 'lucide-react'
 import {
+  esVehiculoPesado,
   etiquetaCategoria,
+  explicarEstadoCobro,
   formatBs,
   formatFechaHora,
 } from '../utils/format'
@@ -102,6 +104,27 @@ export default function PasoDetalleModal({ paso, onCerrar }) {
             <div className="detail-row">
               <span>Monto</span>
               <strong>{formatBs(paso.monto)}</strong>
+            </div>
+            <div
+              className="text-xs"
+              style={{
+                padding: '0.6rem 0.75rem',
+                borderRadius: '8px',
+                background: 'rgba(15, 23, 42, 0.55)',
+                border: '1px solid rgba(148, 163, 184, 0.18)',
+                lineHeight: 1.5,
+              }}
+            >
+              <div>
+                <strong>Criterio tarifario:</strong>{' '}
+                {esVehiculoPesado(paso.categoria_detectada)
+                  ? `${etiquetaCategoria(paso.categoria_detectada)} (${paso.ejes_detectados || '—'} ejes · tarifa por categoría + ejes)`
+                  : `${etiquetaCategoria(paso.categoria_detectada)} (tarifa base por categoría)`}
+                {' · Pasajeros (M4): informativo (Bs 0.00).'}
+              </div>
+              <div className="muted" style={{ marginTop: '0.2rem' }}>
+                {explicarEstadoCobro(paso.estado, paso.monto)}
+              </div>
             </div>
             <div className="detail-row">
               <span>Caseta</span>

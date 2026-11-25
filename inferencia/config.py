@@ -78,10 +78,10 @@ INFERENCE_DEMO = INFERENCE_MODE == "mock"
 INFERENCE_DEVICE = os.environ.get("INFERENCE_DEVICE", "auto").strip() or "auto"
 
 # Umbrales iniciales sujetos a calibración (variables de entorno)
-CONF_M2 = _env_float("CONF_M2", _env_float("SEG_CONF", 0.50))
-CONF_M2_RESCATE = _env_float("CONF_M2_RESCATE", 0.25)
+CONF_M2 = _env_float("CONF_M2", _env_float("SEG_CONF", 0.30))
+CONF_M2_RESCATE = _env_float("CONF_M2_RESCATE", 0.20)
 IOU_M2 = _env_float("IOU_M2", 0.45)
-CONF_M2_COBRO = _env_float("CONF_M2_COBRO", 0.60)
+CONF_M2_COBRO = _env_float("CONF_M2_COBRO", 0.45)
 SEG_CONF = CONF_M2
 
 CONF_M3 = _env_float("CONF_M3", _env_float("POSE_CONF", 0.25))

@@ -1,12 +1,34 @@
 export const ZONA_HORARIA = 'America/La_Paz'
 
 export const CATEGORIAS = [
-  { value: 'moto', label: 'Motocicleta' },
-  { value: 'auto', label: 'Automóvil' },
+  { value: 'moto', label: 'Moto' },
+  { value: 'auto', label: 'Auto' },
   { value: 'minibus', label: 'Minibús' },
   { value: 'camion', label: 'Camión' },
   { value: 'bus', label: 'Bus' },
 ]
+
+export function explicarEstadoCobro(estado, monto) {
+  const m = formatBs(monto)
+  switch (estado) {
+    case 'pagado':
+      return `Cobro automático de ${m} descontado del saldo del vehículo.`
+    case 'sin_saldo':
+      return `Saldo insuficiente para cobrar ${m}. Se generó alerta operativa.`
+    case 'no_registrado':
+      return `Placa no registrada en el padrón (tarifa ref. ${m}). Se generó alerta de posible evasión.`
+    case 'inactivo':
+      return `Vehículo inactivo en el padrón (tarifa ref. ${m}). Se generó alerta.`
+    case 'revision':
+      return 'Sin cobro automático (Bs 0.00): requiere validación del operador por discrepancia o ejes sin confirmar.'
+    default:
+      return ''
+  }
+}
+
+export function esVehiculoPesado(categoria) {
+  return categoria === 'camion' || categoria === 'bus'
+}
 
 export const ESTADOS_PASO = [
   { value: 'pagado', label: 'Pagado' },

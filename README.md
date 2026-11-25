@@ -19,9 +19,10 @@ Sistema de control de peaje de punta a punta con visión por computadora (detecc
 
 ## Enlaces de Producción y Datasets
 
-- **Subdominio Web (HTTPS):** `https://<tu-subdominio>.onrender.com` _(completar al desplegar)_
-- **Documentación API (Swagger UI):** `https://<tu-backend>.onrender.com/api/v1/docs/` _(completar al desplegar)_
-- **Endpoint de Inferencia (RunPod):** `https://<pod-id>-8000.proxy.runpod.net` _(completar al desplegar)_
+- **Subdominio Web (HTTPS):** https://peaje-frontend.onrender.com
+- **Backend API (HTTPS):** https://peaje-backend.onrender.com/api/v1/
+- **Documentación API (Swagger UI):** https://peaje-backend.onrender.com/api/v1/docs/
+- **Endpoint de Inferencia (RunPod GPU):** https://2xo93oknug2ve3-8000.proxy.runpod.net/health
 - **Dataset M2 — Segmentación vehicular (Roboflow Universe):** [Vehicle Classification V2 (v1)](https://universe.roboflow.com/franz-orozco/vehicle-classification-v2-t9ukm/dataset/1)
 - **Dataset M3 — Original (Roboflow Universe):** [Vehicle Wheel Pose (`trafficanalyse`)](https://universe.roboflow.com/trafficanalyse/vehicle_wheel_pose)
 - **Dataset M3 — Complementario (USP / Zenodo):** [Truck Image Dataset v2.0.0](https://zenodo.org/records/7695824) — DOI: [10.5281/zenodo.7695824](https://doi.org/10.5281/zenodo.7695824) | Publicación: [arXiv:2204.01868](https://arxiv.org/abs/2204.01868) (licencia **CC BY 4.0**)

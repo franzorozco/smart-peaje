@@ -5,6 +5,7 @@ import Modal from '../components/Modal'
 import { useToast } from '../components/toastContext'
 import {
   CATEGORIAS,
+  esVehiculoPesado,
   etiquetaCategoria,
   extraerErrorApi,
   formatBs,
@@ -162,14 +163,26 @@ export default function Tarifas() {
         </div>
       )}
 
+      <div className="panel-card" style={{ padding: '1rem 1.25rem' }}>
+        <strong style={{ display: 'block', marginBottom: '0.35rem' }}>
+          Regla de cobro del peaje
+        </strong>
+        <p className="muted text-sm" style={{ margin: 0, lineHeight: 1.55 }}>
+          • <strong>Categoría (M2):</strong> define la tarifa base para vehículos livianos (Moto, Auto, Minibús).<br />
+          • <strong>Número de ejes (M3):</strong> define la tarifa escalonada para vehículos pesados (Bus y Camión, de 2 a 7 ejes).<br />
+          • <strong>Pasajeros (M4):</strong> registro informativo y control de ocupación en tiempo real (<strong>sin recargo monetario por pasajero</strong>).
+        </p>
+      </div>
+
       <div className="panel-card">
         <div className="table-wrap">
           <table className="data-table">
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Categoría</th>
-                <th>Ejes</th>
+                <th>Categoría (M2)</th>
+                <th>Ejes (M3)</th>
+                <th>Criterio de cobro</th>
                 <th>Monto</th>
                 <th className="text-right">Acciones</th>
               </tr>
@@ -177,13 +190,13 @@ export default function Tarifas() {
             <tbody>
               {cargando ? (
                 <tr>
-                  <td colSpan={5} className="table-empty">
+                  <td colSpan={6} className="table-empty">
                     Cargando tarifas...
                   </td>
                 </tr>
               ) : tarifas.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="table-empty">
+                  <td colSpan={6} className="table-empty">
                     No hay tarifas configuradas.
                   </td>
                 </tr>
@@ -195,6 +208,11 @@ export default function Tarifas() {
                       <strong>{etiquetaCategoria(t.categoria)}</strong>
                     </td>
                     <td>{t.ejes} ejes</td>
+                    <td className="muted text-sm">
+                      {esVehiculoPesado(t.categoria)
+                        ? `Pesado: categoría + ${t.ejes} ejes`
+                        : 'Liviano: tarifa base por categoría'}
+                    </td>
                     <td>
                       <strong className="text-green">{formatBs(t.monto)}</strong>
                     </td>

@@ -400,13 +400,13 @@ def _dibujar_evidencia_multi(
         conf_txt = f" {conf_cat * 100:.0f}%" if conf_cat is not None else ""
         ejes_obs = det.get("ejes_observados")
         ejes_badge = f" | {ejes_obs}E" if ejes_obs else ""
-        etiqueta_veh = f"{det['id_deteccion']} {det['categoria'].upper()}{conf_txt}{ejes_badge}"
-        (tw_l, th_l), _ = cv2.getTextSize(etiqueta_veh, cv2.FONT_HERSHEY_SIMPLEX, 0.56, 2)
-        ly = max(banner_h + th_l + 10, vy1)
-        cv2.rectangle(canvas, (vx1, ly - th_l - 8), (vx1 + tw_l + 10, ly), color_veh, -1)
+        etiqueta_veh = f"{det['categoria'].upper()}{conf_txt}{ejes_badge}"
+        (tw_l, th_l), _ = cv2.getTextSize(etiqueta_veh, cv2.FONT_HERSHEY_SIMPLEX, 0.72, 2)
+        ly = max(banner_h + th_l + 12, vy1)
+        cv2.rectangle(canvas, (vx1, ly - th_l - 10), (vx1 + tw_l + 14, ly), color_veh, -1)
         cv2.putText(
-            canvas, etiqueta_veh, (vx1 + 5, ly - 5),
-            cv2.FONT_HERSHEY_SIMPLEX, 0.56, (15, 23, 42), 2, cv2.LINE_AA,
+            canvas, etiqueta_veh, (vx1 + 7, ly - 6),
+            cv2.FONT_HERSHEY_SIMPLEX, 0.72, (15, 23, 42), 2, cv2.LINE_AA,
         )
 
         # 4. Keypoints de ejes M3 numerados (1..7) conectados en orden frente -> atrás
@@ -1643,11 +1643,11 @@ def inferir_m2_solo(bgr: np.ndarray) -> dict:
                 cv2.polylines(canvas, [pts], True, color, 2, cv2.LINE_AA)
 
             cv2.rectangle(canvas, (x1, y1), (x2, y2), color, 3)
-            label = f"veh_{idx + 1} {cat.upper()} {conf * 100:.0f}%"
-            (tw_l, th_l), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.56, 2)
-            ly = max(banner_h + th_l + 10, y1)
-            cv2.rectangle(canvas, (x1, ly - th_l - 8), (x1 + tw_l + 10, ly), color, -1)
-            cv2.putText(canvas, label, (x1 + 5, ly - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.56, (15, 23, 42), 2, cv2.LINE_AA)
+            label = f"{cat.upper()} {conf * 100:.0f}%"
+            (tw_l, th_l), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.72, 2)
+            ly = max(banner_h + th_l + 12, y1)
+            cv2.rectangle(canvas, (x1, ly - th_l - 10), (x1 + tw_l + 14, ly), color, -1)
+            cv2.putText(canvas, label, (x1 + 7, ly - 6), cv2.FONT_HERSHEY_SIMPLEX, 0.72, (15, 23, 42), 2, cv2.LINE_AA)
 
             vehiculos.append({
                 "id_deteccion": f"veh_{idx + 1}",

@@ -6,9 +6,40 @@ import type { PasoFrameResponse } from '@/lib/types';
 
 import { EstadoBadge } from './EstadoBadge';
 
+const CATEGORIAS_LABELS: Record<string, string> = {
+  moto: 'Moto',
+  auto: 'Auto',
+  minibus: 'Minibús',
+  camion: 'Camión',
+  bus: 'Bus',
+};
+
 function formatCategoria(cat: string): string {
   if (!cat) return '—';
-  return cat.charAt(0).toUpperCase() + cat.slice(1);
+  const key = cat.trim().toLowerCase();
+  return CATEGORIAS_LABELS[key] ?? cat.charAt(0).toUpperCase() + cat.slice(1);
+}
+
+function esVehiculoPesado(cat: string): boolean {
+  const key = (cat || '').trim().toLowerCase();
+  return key === 'camion' || key === 'bus';
+}
+
+function explicarCobro(estado: string, monto: string): string {
+  switch (estado) {
+    case 'pagado':
+      return `Cobro automático de Bs ${monto} descontado del saldo.`;
+    case 'sin_saldo':
+      return `Saldo insuficiente para cobrar Bs ${monto}. Se emitió alerta.`;
+    case 'no_registrado':
+      return `Placa no registrada (tarifa ref. Bs ${monto}). Se emitió alerta de posible evasión.`;
+    case 'inactivo':
+      return `Vehículo inactivo (tarifa ref. Bs ${monto}). Se emitió alerta.`;
+    case 'revision':
+      return 'Sin cobro automático (Bs 0.00): requiere revisión del operador.';
+    default:
+      return '';
+  }
 }
 
 function formatConfianza(confianza: number | null): string {
@@ -80,6 +111,21 @@ export function ResultadoPaso({ resultado }: { resultado: PasoFrameResponse }) {
           label="Saldo restante"
           value={saldo_restante !== null && saldo_restante !== undefined ? `Bs ${saldo_restante}` : '—'}
         />
+      </View>
+
+      <View style={styles.billingBox}>
+        <Text style={styles.billingTitle}>Desglose del cobro</Text>
+        <Text style={styles.billingLine}>
+          {esVehiculoPesado(paso.categoria_detectada)
+            ? `Pesado: ${formatCategoria(paso.categoria_detectada)} · ${paso.ejes_detectados || '—'} ejes → Bs ${paso.monto}`
+            : `Liviano: tarifa base ${formatCategoria(paso.categoria_detectada)} → Bs ${paso.monto}`}
+        </Text>
+        <Text style={styles.billingMuted}>
+          Pasajeros (M4): conteo informativo (sin recargo).
+        </Text>
+        <Text style={styles.billingMuted}>
+          {explicarCobro(paso.estado, paso.monto)}
+        </Text>
       </View>
 
       <View style={styles.footer}>
@@ -172,6 +218,30 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: Palette.text,
     marginTop: 2,
+  },
+  billingBox: {
+    backgroundColor: Palette.surfaceMuted,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: Palette.border,
+    padding: 12,
+    gap: 4,
+  },
+  billingTitle: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: Palette.textMuted,
+    textTransform: 'uppercase',
+  },
+  billingLine: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: Palette.text,
+  },
+  billingMuted: {
+    fontSize: 12,
+    color: Palette.textSecondary,
+    lineHeight: 17,
   },
   footer: {
     flexDirection: 'row',
