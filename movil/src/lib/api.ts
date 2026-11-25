@@ -258,24 +258,85 @@ export async function listarCasetas(): Promise<Caseta[]> {
   return response.data;
 }
 
-async function parseJsonResponse<T>(response: Response): Promise<T> {
-  const text = await response.text();
-  let parsed: unknown = null;
-  if (text) {
+function normalizeUploadUri(uri: string): string {
+  const trimmed = (uri || '').trim();
+  if (!trimmed) return trimmed;
+  if (/^(file|content|ph|assets-library|https?):\/\//i.test(trimmed)) {
+    return trimmed;
+  }
+  return trimmed.startsWith('/') ? `file://${trimmed}` : trimmed;
+}
+
+interface XhrResult {
+  status: number;
+  text: string;
+}
+
+function sendMultipartXhr(
+  url: string,
+  formData: FormData,
+  token: string | null,
+  timeoutMs: number
+): Promise<XhrResult> {
+  return new Promise<XhrResult>((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', url);
+    xhr.timeout = timeoutMs;
+    xhr.setRequestHeader('Accept', 'application/json');
+    if (token) {
+      xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+    }
+
+    xhr.onload = () => {
+      resolve({
+        status: xhr.status,
+        text: typeof xhr.responseText === 'string' ? xhr.responseText : '',
+      });
+    };
+
+    xhr.ontimeout = () => {
+      reject(new ApiError('Tiempo de espera agotado al enviar la captura.', 0));
+    };
+
+    xhr.onerror = () => {
+      const detalle =
+        typeof xhr.responseText === 'string' && xhr.responseText.trim()
+          ? ` (${xhr.responseText.trim().slice(0, 120)})`
+          : '';
+      reject(
+        new ApiError(
+          `Error de red al enviar archivo al servidor${detalle}. Verifica tu conexión.`,
+          0
+        )
+      );
+    };
+
     try {
-      parsed = JSON.parse(text);
+      xhr.send(formData);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Fallo al preparar el envío';
+      reject(new ApiError(`No se pudo enviar la captura: ${msg}`, 0));
+    }
+  });
+}
+
+function parseXhrJson<T>(res: XhrResult): T {
+  let parsed: unknown = null;
+  if (res.text) {
+    try {
+      parsed = JSON.parse(res.text);
     } catch {
       parsed = null;
     }
   }
 
-  if (!response.ok) {
+  if (res.status < 200 || res.status >= 300) {
     const data = parsed && typeof parsed === 'object' ? (parsed as ApiErrorBody) : undefined;
     const fallback =
-      response.status === 503
+      res.status === 503
         ? 'Servicio de inferencia no disponible'
-        : `Error del servidor (${response.status})`;
-    throw new ApiError(extractErrorMessage(data, fallback), response.status, data);
+        : `Error del servidor (${res.status})`;
+    throw new ApiError(extractErrorMessage(data, fallback), res.status, data);
   }
 
   return parsed as T;
@@ -284,46 +345,21 @@ async function parseJsonResponse<T>(response: Response): Promise<T> {
 async function fetchMultipartWithAuthRetry<T>(
   path: string,
   buildFormData: () => FormData,
-  timeoutMs = 60000
+  timeoutMs = 90000
 ): Promise<T> {
-  const execute = async (token: string | null): Promise<Response> => {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), timeoutMs);
-    try {
-      const headers: Record<string, string> = {
-        Accept: 'application/json',
-      };
-      if (token) {
-        headers.Authorization = `Bearer ${token}`;
-      }
-      return await fetch(`${API_URL}${path}`, {
-        method: 'POST',
-        headers,
-        body: buildFormData(),
-        signal: controller.signal,
-      });
-    } catch (error) {
-      if (error instanceof Error && error.name === 'AbortError') {
-        throw new ApiError('Tiempo de espera agotado al enviar la captura.', 0);
-      }
-      throw new ApiError('Error de red al comunicarse con el servidor.', 0);
-    } finally {
-      clearTimeout(timer);
-    }
-  };
-
+  const url = `${API_URL}${path}`;
   let token = await getAccessToken();
-  let response = await execute(token);
+  let res = await sendMultipartXhr(url, buildFormData(), token, timeoutMs);
 
-  if (response.status === 401) {
+  if (res.status === 401) {
     const refreshed = await refreshAccessToken();
     if (refreshed) {
       token = refreshed;
-      response = await execute(token);
+      res = await sendMultipartXhr(url, buildFormData(), token, timeoutMs);
     }
   }
 
-  return parseJsonResponse<T>(response);
+  return parseXhrJson<T>(res);
 }
 
 export async function enviarCapturaCaseta(params: {
@@ -336,7 +372,7 @@ export async function enviarCapturaCaseta(params: {
     () => {
       const formData = new FormData();
       formData.append('file', {
-        uri: params.file.uri,
+        uri: normalizeUploadUri(params.file.uri),
         name: params.file.name,
         type: params.file.type,
       } as unknown as Blob);
@@ -344,7 +380,7 @@ export async function enviarCapturaCaseta(params: {
       formData.append('caseta_id', String(params.casetaId));
       return formData;
     },
-    65000
+    90000
   );
 }
 
@@ -366,7 +402,7 @@ export async function enviarConsultaImagen(
     () => {
       const formData = new FormData();
       formData.append('file', {
-        uri: file.uri,
+        uri: normalizeUploadUri(file.uri),
         name: file.name,
         type: file.type,
       } as unknown as Blob);
@@ -375,6 +411,6 @@ export async function enviarConsultaImagen(
       }
       return formData;
     },
-    45000
+    60000
   );
 }

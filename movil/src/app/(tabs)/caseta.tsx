@@ -38,13 +38,15 @@ function buildVideoFile(uri: string): ArchivoCaptura {
   };
 }
 
-function buildPhotoFile(uri: string): ArchivoCaptura {
-  const isPng = uri.toLowerCase().endsWith('.png');
-  return {
-    uri,
-    name: isPng ? 'captura.png' : 'captura.jpg',
-    type: isPng ? 'image/png' : 'image/jpeg',
-  };
+function buildPhotoFile(uri: string, mimeType?: string | null): ArchivoCaptura {
+  const lower = uri.toLowerCase();
+  if (mimeType === 'image/webp' || lower.endsWith('.webp')) {
+    return { uri, name: 'captura.webp', type: 'image/webp' };
+  }
+  if (mimeType === 'image/png' || lower.endsWith('.png')) {
+    return { uri, name: 'captura.png', type: 'image/png' };
+  }
+  return { uri, name: 'captura.jpg', type: mimeType || 'image/jpeg' };
 }
 
 export default function CasetaScreen() {
@@ -274,7 +276,7 @@ export default function CasetaScreen() {
     const isVid = asset.type === 'video' || /\.(mp4|mov)$/i.test(asset.uri);
     const capture: PendingCapture = {
       capturaId: Crypto.randomUUID(),
-      file: isVid ? buildVideoFile(asset.uri) : buildPhotoFile(asset.uri),
+      file: isVid ? buildVideoFile(asset.uri) : buildPhotoFile(asset.uri, asset.mimeType),
     };
     await uploadCapture(capture);
   };
