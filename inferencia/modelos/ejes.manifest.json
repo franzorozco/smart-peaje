@@ -1,0 +1,45 @@
+{
+  "modelo": "M3",
+  "archivo": "ejes.pt",
+  "sha256": "6c274a14226a6eb12ac6b4af1ea5a2be45c876e7aa90b0603456f866ebb9eff2",
+  "task": "pose",
+  "modo_m3": "llantas",
+  "arquitectura": "yolo11s-pose.pt",
+  "names": {
+    "0": "llanta"
+  },
+  "kpt_shape": [
+    5,
+    3
+  ],
+  "keypoints": [
+    "centro",
+    "abajo",
+    "arriba",
+    "izquierda",
+    "derecha"
+  ],
+  "imgsz": 640,
+  "epochs": 80,
+  "conf_bbox": 0.25,
+  "conf_keypoint": 0.35,
+  "metricas_pose_val": {
+    "metrics/precision(B)": 0.48974,
+    "metrics/recall(B)": 0.40314,
+    "metrics/mAP50(B)": 0.37428,
+    "metrics/mAP50-95(B)": 0.19975,
+    "metrics/precision(P)": 0.59884,
+    "metrics/recall(P)": 0.49264,
+    "metrics/mAP50(P)": 0.4957,
+    "metrics/mAP50-95(P)": 0.35553,
+    "val/box_loss": 2.03662,
+    "val/pose_loss": 2.04267,
+    "val/kobj_loss": 0.10531,
+    "val/cls_loss": 2.00084,
+    "val/dfl_loss": 2.01132,
+    "fitness": 0.55528
+  },
+  "fecha_integracion_utc": "2026-11-24T21:46:09.356227+00:00",
+  "origen": "Modelo YOLO11s-pose de deteccion individual de llantas (carpeta best/)",
+  "respaldo_anterior": "inferencia/modelos/respaldo_m3_anterior/ejes_v2_anterior.pt"
+}

@@ -1,0 +1,16 @@
+{
+  "modelo": "M4",
+  "archivo": "pasajeros.pt",
+  "sha256": "a7cd8f929e1903d78a12a48efecab430209f18dc46cb96c3599a5980c63c423c",
+  "task": "segment",
+  "arquitectura": "YOLOv8n-seg",
+  "pesos_origen": "yolov8n-seg.pt (Ultralytics COCO 2017 Segmentation)",
+  "fuente_oficial": "https://docs.ultralytics.com/datasets/segment/coco/",
+  "clase_activa": {
+    "0": "person"
+  },
+  "clases_totales_modelo": 80,
+  "privacidad": "Sin reconocimiento facial, sin biometria, sin recortes de rostros; mascaras opacas unicamente.",
+  "fecha_integracion_utc": "2026-11-24T22:12:41.769455+00:00",
+  "torch": "2.15.0+cpu"
+}

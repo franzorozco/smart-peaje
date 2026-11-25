@@ -1,0 +1,454 @@
+{
+  "health": {
+    "status": "ok",
+    "modo_ejecucion": "real",
+    "modelos": {
+      "m1_detector": true,
+      "m1_ocr": true,
+      "m2_segmentacion": true,
+      "m3_keypoints": true,
+      "pasajeros": false
+    },
+    "m2": {
+      "cargado": true,
+      "ruta": "E:\\Universidad\\OCTABO SEMESTRE\\IA PEAJE\\inferencia\\modelos\\vehiculos.pt",
+      "clases": {
+        "0": "auto",
+        "1": "bus",
+        "2": "camion",
+        "3": "minibus",
+        "4": "moto"
+      },
+      "conf_umbral": 0.5,
+      "iou_umbral": 0.45,
+      "conf_cobro": 0.6,
+      "manifiesto": {
+        "base_model": "yolov8n-seg.pt",
+        "input_size": 640,
+        "sha256": "8d47707a902421da",
+        "box_mAP50": 0.9455230223037934,
+        "mask_mAP50": 0.9442543872604612
+      },
+      "error": null
+    },
+    "m3": {
+      "cargado": true,
+      "estado": "activo",
+      "ruta": "E:\\Universidad\\OCTABO SEMESTRE\\IA PEAJE\\inferencia\\modelos\\ejes.pt",
+      "clases": {
+        "0": "vehiculo"
+      },
+      "kpt_shape": [
+        7,
+        3
+      ],
+      "kpt_shape_esperado": [
+        7,
+        3
+      ],
+      "conf_umbral": 0.25,
+      "conf_keypoint": 0.5,
+      "iou_asociacion": 0.5,
+      "manifiesto": {
+        "arquitectura": "YOLOv8n-pose",
+        "sha256": "2bddc35468b45a0c",
+        "mAP50_pose_test": 0.893301182545961,
+        "mAP50_95_pose_test": 0.8471312910932337,
+        "exactitud_entre_detectados": 0.959349593495935,
+        "mae_detectados": 0.052845528455284556
+      },
+      "error": null
+    },
+    "clases_m2": [
+      "auto",
+      "bus",
+      "camion",
+      "minibus",
+      "moto"
+    ],
+    "kpt_shape_esperado": [
+      7,
+      3
+    ],
+    "gpu": false,
+    "dispositivo": "cpu",
+    "demo": false
+  },
+  "resumen_por_ejes_test": {
+    "2": {
+      "total": 8,
+      "m2_detectados": 2,
+      "m3_asociados": 2,
+      "exactos": 2,
+      "exactitud_asociados_pct": 100.0,
+      "mae": 0.0,
+      "estados": {
+        "confirmado": 2,
+        "sin_deteccion_m2": 6
+      }
+    },
+    "3": {
+      "total": 8,
+      "m2_detectados": 1,
+      "m3_asociados": 1,
+      "exactos": 1,
+      "exactitud_asociados_pct": 100.0,
+      "mae": 0.0,
+      "estados": {
+        "sin_deteccion_m2": 7,
+        "confirmado": 1
+      }
+    },
+    "4": {
+      "total": 4,
+      "m2_detectados": 3,
+      "m3_asociados": 3,
+      "exactos": 1,
+      "exactitud_asociados_pct": 33.3,
+      "mae": 0.667,
+      "estados": {
+        "confirmado": 2,
+        "pendiente_confirmacion": 1,
+        "sin_deteccion_m2": 1
+      }
+    },
+    "5": {
+      "total": 8,
+      "m2_detectados": 5,
+      "m3_asociados": 5,
+      "exactos": 4,
+      "exactitud_asociados_pct": 80.0,
+      "mae": 0.2,
+      "estados": {
+        "pendiente_confirmacion": 1,
+        "sin_deteccion_m2": 3,
+        "confirmado": 4
+      }
+    },
+    "6": {
+      "total": 8,
+      "m2_detectados": 4,
+      "m3_asociados": 4,
+      "exactos": 3,
+      "exactitud_asociados_pct": 75.0,
+      "mae": 0.25,
+      "estados": {
+        "confirmado": 3,
+        "pendiente_confirmacion": 1,
+        "sin_deteccion_m2": 4
+      }
+    },
+    "7": {
+      "total": 4,
+      "m2_detectados": 4,
+      "m3_asociados": 4,
+      "exactos": 2,
+      "exactitud_asociados_pct": 50.0,
+      "mae": 0.5,
+      "estados": {
+        "pendiente_confirmacion": 3,
+        "confirmado": 1
+      }
+    }
+  },
+  "resumen_global_test": {
+    "asociados_m2_m3": 19,
+    "exactos": 13,
+    "exactitud_asociados_pct": 68.42,
+    "mae_asociados": 0.3158
+  },
+  "clasificacion_m2_sobre_camiones_usp_test": {
+    "camion": 14,
+    "bus": 3
+  },
+  "multi_vehiculo_test": [],
+  "prueba_oclusion": {
+    "imagen_base": "usp_20170418083536-550_color-[ROI-1]-22.jpg",
+    "ejes_reales_completo": 5,
+    "ejes_observados_ocluido": 3,
+    "ejes_estado": "pendiente_confirmacion",
+    "motivos_revision": [
+      "keypoints_confianza_intermedia:1"
+    ]
+  },
+  "sin_vehiculos_422": {
+    "status": 422,
+    "body": {
+      "detail": "No se detectó ningún vehículo; capture otra toma"
+    }
+  },
+  "m1_imagen_completa": {
+    "status": 200,
+    "placa": "9000LAB",
+    "confianza": 0.9775
+  },
+  "prueba_video_6s": {
+    "imagen_origen": "usp_20170418083536-550_color-[ROI-1]-100.jpg",
+    "ejes_reales": 3,
+    "duracion_s": 6.0,
+    "frames_muestreados": 0,
+    "predicciones_por_frame": []
+  },
+  "latencia_ms": {
+    "n": 19,
+    "min": 165,
+    "promedio": 425.2,
+    "p50": 260.0,
+    "p95": 756.4,
+    "max": 3163
+  },
+  "ejemplo_json_camion": {
+    "imagen": "usp_20170418083536-550_color-[ROI-1]-22.jpg",
+    "ejes_reales": 5,
+    "respuesta": {
+      "placa": null,
+      "placa_cruda": null,
+      "confianza": null,
+      "categoria": "bus",
+      "clase_id": 1,
+      "confianza_categoria": 0.7841,
+      "confianza_incierta": false,
+      "ejes": 4,
+      "ejes_observados": 4,
+      "ejes_estimados": 4,
+      "ejes_visibles": 4,
+      "ejes_estado": "pendiente_confirmacion",
+      "requiere_revision_ejes": true,
+      "motivos_revision_ejes": [
+        "conteo_4_ejes_requiere_confirmacion"
+      ],
+      "limite_esquema_7_alcanzado": false,
+      "m3_disponible": true,
+      "pasajeros": null,
+      "total_vehiculos": 1,
+      "total_detecciones_m3_escena": 3,
+      "asociaciones_m2_m3": 1,
+      "vehiculos": [
+        {
+          "id_deteccion": "veh_1",
+          "clase_id": 1,
+          "clase_modelo": "bus",
+          "categoria": "bus",
+          "confianza_categoria": 0.7841,
+          "confianza_incierta": false,
+          "bbox": [
+            210,
+            21,
+            1903,
+            543
+          ],
+          "centroide": [
+            1056.5,
+            282.0
+          ],
+          "area_px": 883746,
+          "mascara_disponible": true,
+          "mascara_poligono": [
+            [
+              213.0,
+              80.9
+            ],
+            [
+              237.0,
+              185.7
+            ],
+            [
+              432.0,
+              188.7
+            ],
+            [
+              495.0,
+              263.6
+            ],
+            [
+              312.0,
+              329.5
+            ],
+            [
+              342.0,
+              443.3
+            ],
+            [
+              555.0,
+              446.3
+            ],
+            [
+              612.0,
+              512.2
+            ],
+            [
+              798.0,
+              485.3
+            ],
+            [
+              855.0,
+              512.2
+            ],
+            [
+              933.0,
+              431.3
+            ],
+            [
+              1185.0,
+              449.3
+            ],
+            [
+              1230.0,
+              398.4
+            ],
+            [
+              1302.0,
+              407.4
+            ],
+            [
+              1380.0,
+              503.2
+            ],
+            [
+              1656.0,
+              464.3
+            ],
+            [
+              1770.0,
+              506.2
+            ],
+            [
+              1839.0,
+              422.4
+            ],
+            [
+              1818.0,
+              344.5
+            ],
+            [
+              1656.0,
+              263.6
+            ],
+            [
+              1371.0,
+              296.5
+            ],
+            [
+              1380.0,
+              224.7
+            ],
+            [
+              1491.0,
+              200.7
+            ],
+            [
+              1506.0,
+              134.8
+            ],
+            [
+              930.0,
+              80.9
+            ],
+            [
+              945.0,
+              116.8
+            ]
+          ],
+          "zona_asociacion": {
+            "crop_bbox": [
+              126,
+              0,
+              1920,
+              569
+            ],
+            "placa_bbox": null,
+            "iou_m2_m3": 0.8678,
+            "asociacion_metodo": "escena_iou_1a1"
+          },
+          "placa": null,
+          "placa_cruda": null,
+          "confianza": null,
+          "ejes": 4,
+          "ejes_observados": 4,
+          "ejes_estimados": 4,
+          "ejes_visibles": 4,
+          "ejes_estado": "pendiente_confirmacion",
+          "requiere_revision_ejes": true,
+          "motivos_revision_ejes": [
+            "conteo_4_ejes_requiere_confirmacion"
+          ],
+          "limite_esquema_7_alcanzado": false,
+          "conf_bbox_m3": 0.3598,
+          "keypoints_ejes": [
+            {
+              "nombre": "eje_1",
+              "indice": 1,
+              "x": 1649.9,
+              "y": 432.7,
+              "conf": 0.5105,
+              "visible": true
+            },
+            {
+              "nombre": "eje_2",
+              "indice": 2,
+              "x": 1347.6,
+              "y": 425.8,
+              "conf": 0.9891,
+              "visible": true
+            },
+            {
+              "nombre": "eje_3",
+              "indice": 3,
+              "x": 850.1,
+              "y": 484.8,
+              "conf": 0.9994,
+              "visible": true
+            },
+            {
+              "nombre": "eje_4",
+              "indice": 4,
+              "x": 782.7,
+              "y": 435.9,
+              "conf": 0.8686,
+              "visible": true
+            },
+            {
+              "nombre": "eje_5",
+              "indice": 5,
+              "x": 680.3,
+              "y": 398.4,
+              "conf": 0.2763,
+              "visible": false
+            },
+            {
+              "nombre": "eje_6",
+              "indice": 6,
+              "x": 648.6,
+              "y": 438.0,
+              "conf": 0.0066,
+              "visible": false
+            },
+            {
+              "nombre": "eje_7",
+              "indice": 7,
+              "x": 511.7,
+              "y": 369.9,
+              "conf": 0.0024,
+              "visible": false
+            }
+          ],
+          "pasajeros": null,
+          "mock": false
+        }
+      ],
+      "resumen_umbrales": {
+        "conf_m2": 0.5,
+        "iou_m2": 0.45,
+        "conf_m2_cobro": 0.6,
+        "conf_m3": 0.25,
+        "conf_keypoint": 0.5,
+        "iou_asociacion": 0.5
+      },
+      "evidencia": "<data:image/jpeg;base64,...>",
+      "modo_ejecucion": "real",
+      "demo": false,
+      "latencia_ms": 272
+    }
+  },
+  "ejemplo_json_multi": null
+}

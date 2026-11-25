@@ -1,0 +1,392 @@
+{
+  "modelo_m4": "YOLOv8n-seg (COCO 2017 Segmentation, clase 0 = person)",
+  "dispositivo": "cpu",
+  "umbrales": {
+    "CONF_M4": 0.3,
+    "IOU_M4": 0.45,
+    "M4_MIN_OVERLAP_VEH": 0.35,
+    "M4_MIN_OVERLAP_CABINA": 0.2,
+    "M4_MIN_BRILLO_CABINA": 55.0,
+    "M4_MIN_CONTRASTE_CABINA": 20.0,
+    "M4_MAX_REFLEJO_RATIO": 0.35
+  },
+  "total_casos_evaluados": 11,
+  "exactitud_global_incluye_null": 0.5455,
+  "casos_determinables": 7,
+  "exactitud_determinables": 0.7143,
+  "mae_determinables_con_prediccion": 0.2857,
+  "casos_no_determinables_ref_null": 4,
+  "abstenciones_null_correctas": 1,
+  "peatones_descartados_total": 4,
+  "latencia_m4_ms": {
+    "media": 81.84,
+    "p50": 87.46,
+    "p95": 111.13
+  },
+  "latencia_pipeline_total_ms": {
+    "media": 640.22,
+    "p50": 477.08,
+    "p95": 2491.68
+  },
+  "resultados": [
+    {
+      "id": "m4_01_conductor_visible",
+      "archivo": "imag-471-_png.rf.bc8357b5ed97b170088316641ef8eb51.jpg",
+      "escenario": "conductor_visible_ventana_abierta",
+      "categoria_m2": "auto",
+      "ref_ocupantes": 1,
+      "pred_ocupantes": 1,
+      "conductor_detectado": 0,
+      "pasajeros_adicionales": 1,
+      "estado_conteo": "confiable",
+      "criterio_rol": "frontal_sin_ocupante_en_asiento_conductor",
+      "peatones_en_escena": 0,
+      "peatones_descartados_m4": 0,
+      "visibilidad_cabina": {
+        "cabina_bbox": [
+          160,
+          36,
+          599,
+          223
+        ],
+        "ancho_px": 439,
+        "alto_px": 187,
+        "brillo_medio": 93.8,
+        "contraste": 36.9,
+        "ratio_reflejo": 0.0,
+        "ratio_oscuro": 0.1269
+      },
+      "acierto_exacto": true,
+      "m4_ms": 32.98,
+      "pipeline_total_ms": 2491.68,
+      "evidencia": "m4_01_conductor_visible.jpg"
+    },
+    {
+      "id": "m4_02_ocupante_y_peatones",
+      "archivo": "imag-622-_png.rf.9a80c1347d6414d1122c246bc7eb83db.jpg",
+      "escenario": "ocupante_puerta_abierta_y_peatones_cercanos",
+      "categoria_m2": "moto",
+      "ref_ocupantes": 1,
+      "pred_ocupantes": 1,
+      "conductor_detectado": 1,
+      "pasajeros_adicionales": 0,
+      "estado_conteo": "confiable",
+      "criterio_rol": "moto_jinete_principal",
+      "peatones_en_escena": 3,
+      "peatones_descartados_m4": 1,
+      "visibilidad_cabina": {
+        "cabina_bbox": [
+          840,
+          321,
+          900,
+          460
+        ],
+        "ancho_px": 60,
+        "alto_px": 139,
+        "brillo_medio": null,
+        "contraste": null,
+        "ratio_reflejo": null,
+        "ratio_oscuro": null
+      },
+      "acierto_exacto": true,
+      "m4_ms": 128.95,
+      "pipeline_total_ms": 584.87,
+      "evidencia": "m4_02_ocupante_y_peatones.jpg"
+    },
+    {
+      "id": "m4_03_vacio_claro",
+      "archivo": "media_1795554611711_7b3cc698.webp",
+      "escenario": "vehiculo_vacio_cabina_clara",
+      "categoria_m2": "auto",
+      "ref_ocupantes": 0,
+      "pred_ocupantes": 0,
+      "conductor_detectado": 0,
+      "pasajeros_adicionales": 0,
+      "estado_conteo": "confiable_cero_observados",
+      "criterio_rol": "sin_ocupantes_detectados",
+      "peatones_en_escena": 0,
+      "peatones_descartados_m4": 0,
+      "visibilidad_cabina": {
+        "cabina_bbox": [
+          138,
+          231,
+          879,
+          453
+        ],
+        "ancho_px": 741,
+        "alto_px": 222,
+        "brillo_medio": 171.9,
+        "contraste": 82.9,
+        "ratio_reflejo": 0.3324,
+        "ratio_oscuro": 0.0984
+      },
+      "acierto_exacto": true,
+      "m4_ms": 86.55,
+      "pipeline_total_ms": 366.99,
+      "evidencia": "m4_03_vacio_claro.jpg"
+    },
+    {
+      "id": "m4_04_peatones_acera",
+      "archivo": "imag-406-_png.rf.5aef01d6d826d0521998c768ae00d996.jpg",
+      "escenario": "peatones_cercanos_sin_ocupantes",
+      "categoria_m2": "camion",
+      "ref_ocupantes": 0,
+      "pred_ocupantes": 0,
+      "conductor_detectado": 0,
+      "pasajeros_adicionales": 0,
+      "estado_conteo": "confiable_cero_observados",
+      "criterio_rol": "sin_ocupantes_detectados",
+      "peatones_en_escena": 3,
+      "peatones_descartados_m4": 2,
+      "visibilidad_cabina": {
+        "cabina_bbox": [
+          439,
+          38,
+          564,
+          221
+        ],
+        "ancho_px": 125,
+        "alto_px": 183,
+        "brillo_medio": 106.2,
+        "contraste": 38.9,
+        "ratio_reflejo": 0.0015,
+        "ratio_oscuro": 0.0251
+      },
+      "acierto_exacto": true,
+      "m4_ms": 88.37,
+      "pipeline_total_ms": 477.08,
+      "evidencia": "m4_04_peatones_acera.jpg"
+    },
+    {
+      "id": "m4_05_peaton_pegado_vehiculo",
+      "archivo": "imag-644-_png.rf.8b1e527c14ab52950508ddb6ba7593e8.jpg",
+      "escenario": "peaton_junto_a_vehiculo",
+      "categoria_m2": "auto",
+      "ref_ocupantes": 0,
+      "pred_ocupantes": 1,
+      "conductor_detectado": 0,
+      "pasajeros_adicionales": 1,
+      "estado_conteo": "confiable",
+      "criterio_rol": "frontal_sin_ocupante_en_asiento_conductor",
+      "peatones_en_escena": 2,
+      "peatones_descartados_m4": 0,
+      "visibilidad_cabina": {
+        "cabina_bbox": [
+          151,
+          52,
+          682,
+          389
+        ],
+        "ancho_px": 531,
+        "alto_px": 337,
+        "brillo_medio": 105.9,
+        "contraste": 41.7,
+        "ratio_reflejo": 0.0,
+        "ratio_oscuro": 0.0435
+      },
+      "acierto_exacto": false,
+      "m4_ms": 53.9,
+      "pipeline_total_ms": 292.18,
+      "evidencia": "m4_05_peaton_pegado_vehiculo.jpg"
+    },
+    {
+      "id": "m4_06_vidrio_polarizado_sombra",
+      "archivo": "imag-1241-_png.rf.8adbb34b92d3289c0cfe638dd9f58462.jpg",
+      "escenario": "vidrios_polarizados_u_oscuros",
+      "categoria_m2": "auto",
+      "ref_ocupantes": null,
+      "pred_ocupantes": null,
+      "conductor_detectado": null,
+      "pasajeros_adicionales": null,
+      "estado_conteo": "vidrio_polarizado_u_oscuro",
+      "criterio_rol": "sin_ocupantes_detectados",
+      "peatones_en_escena": 0,
+      "peatones_descartados_m4": 0,
+      "visibilidad_cabina": {
+        "cabina_bbox": [
+          539,
+          409,
+          819,
+          480
+        ],
+        "ancho_px": 280,
+        "alto_px": 71,
+        "brillo_medio": 63.0,
+        "contraste": 19.2,
+        "ratio_reflejo": 0.0,
+        "ratio_oscuro": 0.1639
+      },
+      "acierto_exacto": true,
+      "m4_ms": 77.94,
+      "pipeline_total_ms": 411.91,
+      "evidencia": "m4_06_vidrio_polarizado_sombra.jpg"
+    },
+    {
+      "id": "m4_07_polarizado_y_peatones",
+      "archivo": "coco_train_images_3423_jpg.rf.305a1351f440220e99c7b103da23c547.jpg",
+      "escenario": "vidrios_oscuros_y_peatones_cercanos",
+      "categoria_m2": "auto",
+      "ref_ocupantes": null,
+      "pred_ocupantes": 0,
+      "conductor_detectado": 0,
+      "pasajeros_adicionales": 0,
+      "estado_conteo": "confiable_cero_observados",
+      "criterio_rol": "sin_ocupantes_detectados",
+      "peatones_en_escena": 4,
+      "peatones_descartados_m4": 0,
+      "visibilidad_cabina": {
+        "cabina_bbox": [
+          1413,
+          671,
+          1797,
+          833
+        ],
+        "ancho_px": 384,
+        "alto_px": 162,
+        "brillo_medio": 94.3,
+        "contraste": 51.2,
+        "ratio_reflejo": 0.0,
+        "ratio_oscuro": 0.2047
+      },
+      "acierto_exacto": false,
+      "m4_ms": 71.0,
+      "pipeline_total_ms": 610.1,
+      "evidencia": "m4_07_polarizado_y_peatones.jpg"
+    },
+    {
+      "id": "m4_08_reflejo_parabrisas",
+      "escenario": "reflejo_intenso_parabrisas",
+      "ref_ocupantes": null,
+      "error": "No se detectó ningún vehículo; capture otra toma",
+      "m4_ms": 37.76
+    },
+    {
+      "id": "m4_09_oclusion_letreros_y_peaton",
+      "archivo": "media_1795555604979_d6474d3f.jpg",
+      "escenario": "oclusion_letreros_parabrisas_y_peaton",
+      "categoria_m2": "auto",
+      "ref_ocupantes": null,
+      "pred_ocupantes": 0,
+      "conductor_detectado": 0,
+      "pasajeros_adicionales": 0,
+      "estado_conteo": "confiable_cero_observados",
+      "criterio_rol": "sin_ocupantes_detectados",
+      "peatones_en_escena": 1,
+      "peatones_descartados_m4": 0,
+      "visibilidad_cabina": {
+        "cabina_bbox": [
+          101,
+          86,
+          786,
+          530
+        ],
+        "ancho_px": 685,
+        "alto_px": 444,
+        "brillo_medio": 147.3,
+        "contraste": 84.6,
+        "ratio_reflejo": 0.0172,
+        "ratio_oscuro": 0.175
+      },
+      "acierto_exacto": false,
+      "m4_ms": 111.13,
+      "pipeline_total_ms": 314.31,
+      "evidencia": "m4_09_oclusion_letreros_y_peaton.jpg"
+    },
+    {
+      "id": "m4_10_oclusion_trafico_y_peatones",
+      "archivo": "media_1795554918902_0898dd50.jpg",
+      "escenario": "oclusion_multiple_y_peatones",
+      "categoria_m2": "auto",
+      "ref_ocupantes": null,
+      "pred_ocupantes": 0,
+      "conductor_detectado": 0,
+      "pasajeros_adicionales": 0,
+      "estado_conteo": "confiable_cero_observados",
+      "criterio_rol": "sin_ocupantes_detectados",
+      "peatones_en_escena": 4,
+      "peatones_descartados_m4": 1,
+      "visibilidad_cabina": {
+        "cabina_bbox": [
+          237,
+          149,
+          518,
+          270
+        ],
+        "ancho_px": 281,
+        "alto_px": 121,
+        "brillo_medio": 167.9,
+        "contraste": 69.1,
+        "ratio_reflejo": 0.0811,
+        "ratio_oscuro": 0.0585
+      },
+      "acierto_exacto": false,
+      "m4_ms": 94.3,
+      "pipeline_total_ms": 301.63,
+      "evidencia": "m4_10_oclusion_trafico_y_peatones.jpg"
+    },
+    {
+      "id": "m4_11_reflejos_calle_y_peatones",
+      "archivo": "imag-558-_png.rf.2230d8ea44c4c709099bc9eb0353a2de.jpg",
+      "escenario": "reflejos_y_peatones_cercanos",
+      "categoria_m2": "bus",
+      "ref_ocupantes": 0,
+      "pred_ocupantes": 1,
+      "conductor_detectado": 0,
+      "pasajeros_adicionales": 1,
+      "estado_conteo": "confiable",
+      "criterio_rol": "frontal_sin_ocupante_en_asiento_conductor",
+      "peatones_en_escena": 4,
+      "peatones_descartados_m4": 0,
+      "visibilidad_cabina": {
+        "cabina_bbox": [
+          755,
+          229,
+          997,
+          377
+        ],
+        "ancho_px": 242,
+        "alto_px": 148,
+        "brillo_medio": 107.1,
+        "contraste": 47.6,
+        "ratio_reflejo": 0.0008,
+        "ratio_oscuro": 0.1382
+      },
+      "acierto_exacto": false,
+      "m4_ms": 103.81,
+      "pipeline_total_ms": 652.88,
+      "evidencia": "m4_11_reflejos_calle_y_peatones.jpg"
+    },
+    {
+      "id": "m4_12_vehiculo_en_movimiento",
+      "archivo": "20251119_103723_frame_003_jpg.rf.8ea59a28b44ff1f162d6a6aef97ff356.jpg",
+      "escenario": "ocupante_visible_en_circulacion",
+      "categoria_m2": "auto",
+      "ref_ocupantes": 1,
+      "pred_ocupantes": 1,
+      "conductor_detectado": 1,
+      "pasajeros_adicionales": 0,
+      "estado_conteo": "confiable",
+      "criterio_rol": "lateral_ocupante_unico_probable_conductor",
+      "peatones_en_escena": 0,
+      "peatones_descartados_m4": 0,
+      "visibilidad_cabina": {
+        "cabina_bbox": [
+          31,
+          170,
+          480,
+          310
+        ],
+        "ancho_px": 449,
+        "alto_px": 140,
+        "brillo_medio": 92.4,
+        "contraste": 57.9,
+        "ratio_reflejo": 0.0096,
+        "ratio_oscuro": 0.119
+      },
+      "acierto_exacto": true,
+      "m4_ms": 95.4,
+      "pipeline_total_ms": 538.79,
+      "evidencia": "m4_12_vehiculo_en_movimiento.jpg"
+    }
+  ]
+}

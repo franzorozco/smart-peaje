@@ -1,0 +1,611 @@
+{
+  "health": {
+    "status": "ok",
+    "modo_ejecucion": "real",
+    "modelos": {
+      "m1_detector": true,
+      "m1_ocr": true,
+      "m2_segmentacion": true,
+      "m3_keypoints": false,
+      "pasajeros": false
+    },
+    "m2": {
+      "cargado": true,
+      "ruta": "E:\\Universidad\\OCTABO SEMESTRE\\IA PEAJE\\inferencia\\modelos\\vehiculos.pt",
+      "clases": {
+        "0": "auto",
+        "1": "bus",
+        "2": "camion",
+        "3": "minibus",
+        "4": "moto"
+      },
+      "conf_umbral": 0.5,
+      "iou_umbral": 0.45,
+      "conf_cobro": 0.6,
+      "manifiesto": {
+        "base_model": "yolov8n-seg.pt",
+        "input_size": 640,
+        "sha256": "8d47707a902421da",
+        "box_mAP50": 0.9455230223037934,
+        "mask_mAP50": 0.9442543872604612
+      },
+      "error": null
+    },
+    "m3": {
+      "cargado": false,
+      "estado": "pendiente_entrenamiento",
+      "ruta": "E:\\Universidad\\OCTABO SEMESTRE\\IA PEAJE\\inferencia\\modelos\\ejes.pt",
+      "kpt_shape_esperado": [
+        7,
+        3
+      ],
+      "manifiesto": false,
+      "error": "Archivo de pesos no encontrado: E:\\Universidad\\OCTABO SEMESTRE\\IA PEAJE\\inferencia\\modelos\\ejes.pt"
+    },
+    "clases_m2": [
+      "auto",
+      "bus",
+      "camion",
+      "minibus",
+      "moto"
+    ],
+    "kpt_shape_esperado": [
+      7,
+      3
+    ],
+    "gpu": false,
+    "dispositivo": "cpu",
+    "demo": false
+  },
+  "errores_controlados": {
+    "sin_token_401": {
+      "status": 401,
+      "body": {
+        "detail": "No autorizado"
+      }
+    },
+    "imagen_invalida_400": {
+      "status": 400,
+      "body": {
+        "detail": "Imagen inválida"
+      }
+    },
+    "imagen_sin_vehiculos_422": {
+      "status": 422,
+      "body": {
+        "detail": "No se detectó ningún vehículo; capture otra toma"
+      }
+    },
+    "sin_modelo_m2_503": {
+      "status": 503,
+      "body": {
+        "detail": "Modelo M2 no disponible en E:\\Universidad\\OCTABO SEMESTRE\\IA PEAJE\\inferencia\\modelos\\vehiculos.pt"
+      }
+    }
+  },
+  "imagenes_evaluadas_lote": 45,
+  "imagenes_sin_deteccion_lote": 30,
+  "total_detecciones_lote": 16,
+  "mascaras_validas": 16,
+  "conteo_clases_lote": {
+    "auto": 5,
+    "camion": 11
+  },
+  "ejemplos_por_clase": {
+    "auto": {
+      "fuente": "coco_m3_test",
+      "imagen": "images_109_jpg.rf.e8624ff356171f4cd8e8d691281c3af0.jpg",
+      "confianza": 0.9511,
+      "bbox": [
+        1813,
+        604,
+        2345,
+        908
+      ],
+      "vertices_mascara": 16,
+      "ejes_estado": "pendiente_m3"
+    },
+    "camion": {
+      "fuente": "usp_truck_v2",
+      "imagen": "20160927100754-550_color-[ROI-1]-15.jpg",
+      "confianza": 0.9381,
+      "bbox": [
+        859,
+        208,
+        1673,
+        685
+      ],
+      "vertices_mascara": 17,
+      "ejes_estado": "pendiente_m3"
+    }
+  },
+  "clases_no_encontradas_en_muestra": [
+    "bus",
+    "minibus",
+    "moto"
+  ],
+  "imagenes_multi_vehiculo": 1,
+  "top_multi_vehiculo": [
+    {
+      "fuente": "usp_truck_v2",
+      "imagen": "20160927100754-550_color-[ROI-1]-21.jpg",
+      "total_vehiculos": 2,
+      "categorias": [
+        "camion",
+        "camion"
+      ],
+      "latencia_ms": 463
+    }
+  ],
+  "detecciones_baja_confianza_050_060": 1,
+  "muestra_baja_confianza": [
+    {
+      "imagen": "20160927102749_color-[ROI-1]-11.jpg",
+      "categoria": "camion",
+      "confianza": 0.5
+    }
+  ],
+  "bus_vs_minibus": [],
+  "latencia_ms": {
+    "n": 15,
+    "min": 198,
+    "promedio": 1028.6,
+    "p50": 335.0,
+    "p95": 3584.8,
+    "max": 10869
+  },
+  "ejemplo_json_individual": {
+    "imagen": "images_109_jpg.rf.e8624ff356171f4cd8e8d691281c3af0.jpg",
+    "respuesta": {
+      "placa": null,
+      "placa_cruda": null,
+      "confianza": null,
+      "categoria": "auto",
+      "clase_id": 0,
+      "confianza_categoria": 0.9511,
+      "confianza_incierta": false,
+      "ejes": null,
+      "ejes_visibles": 0,
+      "ejes_estado": "pendiente_m3",
+      "requiere_revision_ejes": true,
+      "m3_disponible": false,
+      "pasajeros": null,
+      "total_vehiculos": 1,
+      "vehiculos": [
+        {
+          "id_deteccion": "veh_1",
+          "clase_id": 0,
+          "clase_modelo": "auto",
+          "categoria": "auto",
+          "confianza_categoria": 0.9511,
+          "confianza_incierta": false,
+          "bbox": [
+            1813,
+            604,
+            2345,
+            908
+          ],
+          "centroide": [
+            2079.0,
+            756.0
+          ],
+          "area_px": 161728,
+          "mascara_disponible": true,
+          "mascara_poligono": [
+            [
+              1818.0,
+              708.0
+            ],
+            [
+              1818.0,
+              834.0
+            ],
+            [
+              1866.0,
+              870.0
+            ],
+            [
+              1950.0,
+              906.0
+            ],
+            [
+              1992.0,
+              906.0
+            ],
+            [
+              2046.0,
+              870.0
+            ],
+            [
+              2142.0,
+              846.0
+            ],
+            [
+              2304.0,
+              828.0
+            ],
+            [
+              2340.0,
+              792.0
+            ],
+            [
+              2334.0,
+              720.0
+            ],
+            [
+              2250.0,
+              672.0
+            ],
+            [
+              2190.0,
+              660.0
+            ],
+            [
+              2154.0,
+              630.0
+            ],
+            [
+              2172.0,
+              606.0
+            ],
+            [
+              2004.0,
+              606.0
+            ],
+            [
+              1878.0,
+              642.0
+            ]
+          ],
+          "zona_asociacion": {
+            "crop_bbox": [
+              1787,
+              589,
+              2371,
+              923
+            ],
+            "placa_bbox": null,
+            "keypoints_ejes": []
+          },
+          "placa": null,
+          "placa_cruda": null,
+          "confianza": null,
+          "ejes": null,
+          "ejes_visibles": 0,
+          "ejes_estado": "pendiente_m3",
+          "requiere_revision_ejes": true,
+          "pasajeros": null,
+          "mock": false
+        }
+      ],
+      "resumen_m2": {
+        "conf_umbral": 0.5,
+        "iou_umbral": 0.45,
+        "conf_cobro": 0.6,
+        "total_vehiculos": 1
+      },
+      "evidencia": "<data:image/jpeg;base64,...>",
+      "modo_ejecucion": "real",
+      "demo": false,
+      "latencia_ms": 10869
+    }
+  },
+  "ejemplo_json_multi": {
+    "imagen": "20160927100754-550_color-[ROI-1]-21.jpg",
+    "respuesta": {
+      "placa": null,
+      "placa_cruda": null,
+      "confianza": null,
+      "categoria": "camion",
+      "clase_id": 2,
+      "confianza_categoria": 0.6832,
+      "confianza_incierta": false,
+      "ejes": null,
+      "ejes_visibles": 0,
+      "ejes_estado": "pendiente_m3",
+      "requiere_revision_ejes": true,
+      "m3_disponible": false,
+      "pasajeros": null,
+      "total_vehiculos": 2,
+      "vehiculos": [
+        {
+          "id_deteccion": "veh_1",
+          "clase_id": 2,
+          "clase_modelo": "camion",
+          "categoria": "camion",
+          "confianza_categoria": 0.6832,
+          "confianza_incierta": false,
+          "bbox": [
+            838,
+            296,
+            1671,
+            687
+          ],
+          "centroide": [
+            1254.5,
+            491.5
+          ],
+          "area_px": 325703,
+          "mascara_disponible": true,
+          "mascara_poligono": [
+            [
+              840.0,
+              679.0
+            ],
+            [
+              855.0,
+              558.8
+            ],
+            [
+              894.0,
+              549.8
+            ],
+            [
+              945.0,
+              609.9
+            ],
+            [
+              1413.0,
+              624.9
+            ],
+            [
+              1479.0,
+              685.0
+            ],
+            [
+              1569.0,
+              685.0
+            ],
+            [
+              1599.0,
+              612.9
+            ],
+            [
+              1662.0,
+              582.8
+            ],
+            [
+              1644.0,
+              456.7
+            ],
+            [
+              1554.0,
+              411.6
+            ],
+            [
+              1521.0,
+              327.5
+            ],
+            [
+              1299.0,
+              303.4
+            ],
+            [
+              1317.0,
+              444.6
+            ],
+            [
+              1107.0,
+              456.7
+            ],
+            [
+              966.0,
+              411.6
+            ],
+            [
+              963.0,
+              357.5
+            ],
+            [
+              1098.0,
+              330.5
+            ],
+            [
+              975.0,
+              330.5
+            ],
+            [
+              867.0,
+              654.9
+            ],
+            [
+              963.0,
+              357.5
+            ],
+            [
+              951.0,
+              429.6
+            ],
+            [
+              876.0,
+              444.6
+            ],
+            [
+              840.0,
+              411.6
+            ],
+            [
+              873.0,
+              306.4
+            ],
+            [
+              840.0,
+              300.4
+            ],
+            [
+              840.0,
+              411.6
+            ],
+            [
+              876.0,
+              444.6
+            ],
+            [
+              840.0,
+              504.7
+            ]
+          ],
+          "zona_asociacion": {
+            "crop_bbox": [
+              797,
+              277,
+              1712,
+              694
+            ],
+            "placa_bbox": null,
+            "keypoints_ejes": []
+          },
+          "placa": null,
+          "placa_cruda": null,
+          "confianza": null,
+          "ejes": null,
+          "ejes_visibles": 0,
+          "ejes_estado": "pendiente_m3",
+          "requiere_revision_ejes": true,
+          "pasajeros": null,
+          "mock": false
+        },
+        {
+          "id_deteccion": "veh_2",
+          "clase_id": 2,
+          "clase_modelo": "camion",
+          "categoria": "camion",
+          "confianza_categoria": 0.8881,
+          "confianza_incierta": false,
+          "bbox": [
+            256,
+            292,
+            891,
+            685
+          ],
+          "centroide": [
+            573.5,
+            488.5
+          ],
+          "area_px": 249555,
+          "mascara_disponible": true,
+          "mascara_poligono": [
+            [
+              264.0,
+              420.6
+            ],
+            [
+              270.0,
+              522.8
+            ],
+            [
+              309.0,
+              525.8
+            ],
+            [
+              336.0,
+              552.8
+            ],
+            [
+              492.0,
+              561.8
+            ],
+            [
+              516.0,
+              594.9
+            ],
+            [
+              564.0,
+              600.9
+            ],
+            [
+              615.0,
+              679.0
+            ],
+            [
+              702.0,
+              679.0
+            ],
+            [
+              747.0,
+              618.9
+            ],
+            [
+              792.0,
+              679.0
+            ],
+            [
+              849.0,
+              679.0
+            ],
+            [
+              867.0,
+              654.9
+            ],
+            [
+              852.0,
+              645.9
+            ],
+            [
+              846.0,
+              543.8
+            ],
+            [
+              858.0,
+              516.7
+            ],
+            [
+              891.0,
+              519.7
+            ],
+            [
+              870.0,
+              300.4
+            ],
+            [
+              546.0,
+              294.4
+            ],
+            [
+              519.0,
+              384.6
+            ],
+            [
+              315.0,
+              384.6
+            ]
+          ],
+          "zona_asociacion": {
+            "crop_bbox": [
+              225,
+              273,
+              922,
+              694
+            ],
+            "placa_bbox": [
+              378,
+              563,
+              514,
+              604
+            ],
+            "keypoints_ejes": []
+          },
+          "placa": null,
+          "placa_cruda": "MB2007",
+          "confianza": 0.4005,
+          "ejes": null,
+          "ejes_visibles": 0,
+          "ejes_estado": "pendiente_m3",
+          "requiere_revision_ejes": true,
+          "pasajeros": null,
+          "mock": false
+        }
+      ],
+      "resumen_m2": {
+        "conf_umbral": 0.5,
+        "iou_umbral": 0.45,
+        "conf_cobro": 0.6,
+        "total_vehiculos": 2
+      },
+      "evidencia": "<data:image/jpeg;base64,...>",
+      "modo_ejecucion": "real",
+      "demo": false,
+      "latencia_ms": 463
+    }
+  }
+}

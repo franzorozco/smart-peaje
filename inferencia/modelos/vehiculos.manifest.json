@@ -1,0 +1,47 @@
+{
+  "modelo": "M2",
+  "task": "segment",
+  "weights": "vehiculos.pt",
+  "sha256": "8d47707a902421dab3bad56f0ac6d7adf52d1a5f045fa0e9df668d37a7752726",
+  "base_model": "yolov8n-seg.pt",
+  "classes": {
+    "0": "auto",
+    "1": "bus",
+    "2": "camion",
+    "3": "minibus",
+    "4": "moto"
+  },
+  "input_size": 640,
+  "confidence_threshold_initial": 0.4,
+  "dataset": {
+    "workspace": "franz-orozco",
+    "project": "vehicle-classification-v2-t9ukm",
+    "version": 1,
+    "format": "yolov8"
+  },
+  "training_run": "M2_segmentacion_v1",
+  "training_args_file": "args.yaml",
+  "metrics_test": {
+    "metrics/precision(B)": 0.9225217594232664,
+    "metrics/recall(B)": 0.8754244980584245,
+    "metrics/mAP50(B)": 0.9455230223037934,
+    "metrics/mAP50-95(B)": 0.8705867011545361,
+    "metrics/precision(M)": 0.9225217594232664,
+    "metrics/recall(M)": 0.8754244980584245,
+    "metrics/mAP50(M)": 0.9442543872604612,
+    "metrics/mAP50-95(M)": 0.8813789307082192,
+    "fitness": 1.7519656318627552,
+    "mask_mAP50": 0.9442543872604612,
+    "mask_mAP50_95": 0.8813789307082192,
+    "box_mAP50": 0.9455230223037934,
+    "box_mAP50_95": 0.8705867011545361
+  },
+  "environment": {
+    "ultralytics": "8.4.218",
+    "torch": "2.14.1+cu130",
+    "roboflow": "1.7.3",
+    "python": "3.13.16"
+  },
+  "created_utc": "2026-11-24T16:56:12.231827+00:00",
+  "note": "Umbral inicial no calibrado; validar en imágenes nuevas del peaje."
+}

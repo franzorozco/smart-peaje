@@ -1,0 +1,1575 @@
+openapi: 3.0.3
+info:
+  title: Smart Peaje API
+  version: 1.0.0
+  description: API REST para el sistema inteligente de control de peaje, tiempo real
+    y agente consultivo.
+paths:
+  /api/v1/agente/chat:
+    post:
+      operationId: agente_chat_create
+      description: Agente conversacional consultivo por texto o imagen (sin modificar
+        BD).
+      tags:
+      - agente
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mensaje:
+                  type: string
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/alertas/:
+    get:
+      operationId: alertas_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: Un número de página dentro del conjunto de resultados paginado.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Número de resultados a devolver por página.
+        schema:
+          type: integer
+      tags:
+      - alertas
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAlertaList'
+          description: ''
+  /api/v1/alertas/{id}/:
+    get:
+      operationId: alertas_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este alerta.
+        required: true
+      tags:
+      - alertas
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Alerta'
+          description: ''
+    patch:
+      operationId: alertas_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este alerta.
+        required: true
+      tags:
+      - alertas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAlerta'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAlerta'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAlerta'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Alerta'
+          description: ''
+  /api/v1/auth/google:
+    post:
+      operationId: auth_google_create
+      description: Valida un ID token de Google OAuth 2.0 contra la lista blanca y
+        emite JWT.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_token:
+                  type: string
+              required:
+              - id_token
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/auth/me:
+    get:
+      operationId: auth_me_retrieve
+      description: Devuelve el perfil del usuario autenticado.
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/auth/refresh:
+    post:
+      operationId: auth_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/v1/casetas/:
+    get:
+      operationId: casetas_list
+      tags:
+      - casetas
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Caseta'
+          description: ''
+    post:
+      operationId: casetas_create
+      tags:
+      - casetas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Caseta'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Caseta'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Caseta'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Caseta'
+          description: ''
+  /api/v1/casetas/{id}/:
+    get:
+      operationId: casetas_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este caseta.
+        required: true
+      tags:
+      - casetas
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Caseta'
+          description: ''
+    put:
+      operationId: casetas_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este caseta.
+        required: true
+      tags:
+      - casetas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Caseta'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Caseta'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Caseta'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Caseta'
+          description: ''
+    patch:
+      operationId: casetas_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este caseta.
+        required: true
+      tags:
+      - casetas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCaseta'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCaseta'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCaseta'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Caseta'
+          description: ''
+    delete:
+      operationId: casetas_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este caseta.
+        required: true
+      tags:
+      - casetas
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/casetas/{id}/resumen:
+    get:
+      operationId: casetas_resumen_retrieve
+      description: Resumen diario por caseta.
+      parameters:
+      - in: query
+        name: fecha
+        schema:
+          type: string
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - casetas
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/estado:
+    get:
+      operationId: estado_retrieve
+      description: Estado del backend, base de datos, inferencia y Pusher.
+      tags:
+      - estado
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/evidencias/{captura_id}:
+    get:
+      operationId: evidencias_retrieve
+      description: Sirve la imagen JPEG de evidencia verificando la firma temporal.
+      parameters:
+      - in: path
+        name: captura_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: query
+        name: firma
+        schema:
+          type: string
+        required: true
+      tags:
+      - evidencias
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+          description: ''
+  /api/v1/pasos/:
+    get:
+      operationId: pasos_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: Un número de página dentro del conjunto de resultados paginado.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Número de resultados a devolver por página.
+        schema:
+          type: integer
+      tags:
+      - pasos
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPasoList'
+          description: ''
+  /api/v1/pasos/{id}/:
+    get:
+      operationId: pasos_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este paso.
+        required: true
+      tags:
+      - pasos
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Paso'
+          description: ''
+  /api/v1/pasos/frame:
+    post:
+      operationId: pasos_frame_create
+      description: Procesa un frame JPEG/PNG o clip MP4/MOV (5-10 s), llama a inferencia
+        y registra el paso idempotente.
+      tags:
+      - pasos
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                captura_id:
+                  type: string
+                  format: uuid
+                caseta_id:
+                  type: integer
+              required:
+              - file
+              - captura_id
+              - caseta_id
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/placas/{placa}/historial:
+    get:
+      operationId: placas_historial_retrieve
+      description: Historial autorizado de pasos de una placa.
+      parameters:
+      - in: path
+        name: placa
+        schema:
+          type: string
+        required: true
+      tags:
+      - placas
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/placas/consultar:
+    post:
+      operationId: placas_consultar_create
+      description: Consulta el estado de una placa por texto sin modificar saldos
+        ni registrar pasos.
+      tags:
+      - placas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                placa:
+                  type: string
+              required:
+              - placa
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/placas/consultar-imagen:
+    post:
+      operationId: placas_consultar_imagen_create
+      description: Ejecuta M1 (placa + OCR) sobre una imagen y consulta su estado
+        en base de datos.
+      tags:
+      - placas
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+              required:
+              - file
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/realtime/auth:
+    post:
+      operationId: realtime_auth_create
+      description: Autoriza la suscripción al canal privado Pusher private-peaje.
+      tags:
+      - realtime
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                socket_id:
+                  type: string
+                channel_name:
+                  type: string
+              required:
+              - socket_id
+              - channel_name
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/resumen:
+    get:
+      operationId: resumen_retrieve
+      description: Resumen diario global de pasos, recaudación y alertas pendientes.
+      parameters:
+      - in: query
+        name: fecha
+        schema:
+          type: string
+      tags:
+      - resumen
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/schema/:
+    get:
+      operationId: schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - ht
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - ug
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - schema
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/tarifas/:
+    get:
+      operationId: tarifas_list
+      tags:
+      - tarifas
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tarifa'
+          description: ''
+    post:
+      operationId: tarifas_create
+      tags:
+      - tarifas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tarifa'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Tarifa'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Tarifa'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tarifa'
+          description: ''
+  /api/v1/tarifas/{id}/:
+    get:
+      operationId: tarifas_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este tarifa.
+        required: true
+      tags:
+      - tarifas
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tarifa'
+          description: ''
+    put:
+      operationId: tarifas_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este tarifa.
+        required: true
+      tags:
+      - tarifas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tarifa'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Tarifa'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Tarifa'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tarifa'
+          description: ''
+    patch:
+      operationId: tarifas_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este tarifa.
+        required: true
+      tags:
+      - tarifas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTarifa'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTarifa'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTarifa'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tarifa'
+          description: ''
+    delete:
+      operationId: tarifas_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este tarifa.
+        required: true
+      tags:
+      - tarifas
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/usuarios/:
+    get:
+      operationId: usuarios_list
+      tags:
+      - usuarios
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Usuario'
+          description: ''
+    post:
+      operationId: usuarios_create
+      tags:
+      - usuarios
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+  /api/v1/usuarios/{id}/:
+    get:
+      operationId: usuarios_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este usuario.
+        required: true
+      tags:
+      - usuarios
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+    put:
+      operationId: usuarios_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este usuario.
+        required: true
+      tags:
+      - usuarios
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+    patch:
+      operationId: usuarios_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este usuario.
+        required: true
+      tags:
+      - usuarios
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUsuario'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUsuario'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUsuario'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+    delete:
+      operationId: usuarios_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este usuario.
+        required: true
+      tags:
+      - usuarios
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/vehiculos/:
+    get:
+      operationId: vehiculos_list
+      tags:
+      - vehiculos
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vehiculo'
+          description: ''
+    post:
+      operationId: vehiculos_create
+      tags:
+      - vehiculos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vehiculo'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Vehiculo'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Vehiculo'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehiculo'
+          description: ''
+  /api/v1/vehiculos/{id}/:
+    get:
+      operationId: vehiculos_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este vehiculo.
+        required: true
+      tags:
+      - vehiculos
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehiculo'
+          description: ''
+    put:
+      operationId: vehiculos_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este vehiculo.
+        required: true
+      tags:
+      - vehiculos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vehiculo'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Vehiculo'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Vehiculo'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehiculo'
+          description: ''
+    patch:
+      operationId: vehiculos_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este vehiculo.
+        required: true
+      tags:
+      - vehiculos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedVehiculo'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedVehiculo'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedVehiculo'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehiculo'
+          description: ''
+    delete:
+      operationId: vehiculos_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este vehiculo.
+        required: true
+      tags:
+      - vehiculos
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    Alerta:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        tipo:
+          type: string
+          readOnly: true
+        atendida:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        paso:
+          allOf:
+          - $ref: '#/components/schemas/Paso'
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - paso
+      - tipo
+    Caseta:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nombre:
+          type: string
+          maxLength: 80
+        ubicacion:
+          type: string
+          maxLength: 150
+      required:
+      - id
+      - nombre
+      - ubicacion
+    CategoriaEnum:
+      enum:
+      - moto
+      - auto
+      - minibus
+      - camion
+      - bus
+      type: string
+      description: |-
+        * `moto` - Moto
+        * `auto` - Auto
+        * `minibus` - Minibús
+        * `camion` - Camión
+        * `bus` - Bus
+    EstadoEnum:
+      enum:
+      - pagado
+      - sin_saldo
+      - no_registrado
+      - inactivo
+      - revision
+      type: string
+      description: |-
+        * `pagado` - Pagado
+        * `sin_saldo` - Sin saldo
+        * `no_registrado` - No registrado
+        * `inactivo` - Inactivo
+        * `revision` - Revisión
+    PaginatedAlertaList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Alerta'
+    PaginatedPasoList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Paso'
+    Paso:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        captura_id:
+          type: string
+          format: uuid
+        placa_leida:
+          type: string
+          maxLength: 20
+        placa_normalizada:
+          type: string
+          maxLength: 12
+        confianza_ocr:
+          type: number
+          format: double
+          nullable: true
+        categoria_detectada:
+          type: string
+          maxLength: 15
+        ejes_detectados:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        pasajeros:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          nullable: true
+        monto:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        caseta:
+          type: integer
+        caseta_nombre:
+          type: string
+          readOnly: true
+        usuario_email:
+          type: string
+          format: email
+          readOnly: true
+        imagen:
+          type: string
+          nullable: true
+          readOnly: true
+        estado:
+          $ref: '#/components/schemas/EstadoEnum'
+        latencia_ms:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - captura_id
+      - caseta
+      - caseta_nombre
+      - categoria_detectada
+      - created_at
+      - ejes_detectados
+      - estado
+      - id
+      - imagen
+      - monto
+      - placa_leida
+      - placa_normalizada
+      - usuario_email
+    PatchedAlerta:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        tipo:
+          type: string
+          readOnly: true
+        atendida:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        paso:
+          allOf:
+          - $ref: '#/components/schemas/Paso'
+          readOnly: true
+    PatchedCaseta:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nombre:
+          type: string
+          maxLength: 80
+        ubicacion:
+          type: string
+          maxLength: 150
+    PatchedTarifa:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        categoria:
+          $ref: '#/components/schemas/CategoriaEnum'
+        ejes:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        monto:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+    PatchedUsuario:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        nombre:
+          type: string
+          maxLength: 150
+        rol:
+          $ref: '#/components/schemas/RolEnum'
+        activo:
+          type: boolean
+          default: true
+        last_login:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+          title: Último inicio de sesión
+    PatchedVehiculo:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        placa:
+          type: string
+          maxLength: 12
+        propietario:
+          type: string
+          maxLength: 100
+        categoria:
+          $ref: '#/components/schemas/CategoriaEnum'
+        ejes:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        saldo:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        activo:
+          type: boolean
+    RolEnum:
+      enum:
+      - administrador
+      - operador
+      type: string
+      description: |-
+        * `administrador` - Administrador
+        * `operador` - Operador
+    Tarifa:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        categoria:
+          $ref: '#/components/schemas/CategoriaEnum'
+        ejes:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        monto:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+      required:
+      - categoria
+      - ejes
+      - id
+      - monto
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+    Usuario:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        nombre:
+          type: string
+          maxLength: 150
+        rol:
+          $ref: '#/components/schemas/RolEnum'
+        activo:
+          type: boolean
+          default: true
+        last_login:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+          title: Último inicio de sesión
+      required:
+      - email
+      - id
+      - last_login
+    Vehiculo:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        placa:
+          type: string
+          maxLength: 12
+        propietario:
+          type: string
+          maxLength: 100
+        categoria:
+          $ref: '#/components/schemas/CategoriaEnum'
+        ejes:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        saldo:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        activo:
+          type: boolean
+      required:
+      - categoria
+      - ejes
+      - id
+      - placa
+      - propietario
+      - saldo
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,52 @@
+﻿# Secretos y variables de entorno
+.env
+.env.*
+!.env.example
+service-account*.json
+
+# Python / Entornos virtuales
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Node / Web / Móvil
+node_modules/
+dist/
+.expo/
+android/
+ios/
+
+# Pesos de IA y binarios grandes (se guardan en Drive/nube privada, NO en Git)
+*.pt
+inferencia/modelos/*.pt
+inferencia/modelos/respaldo_m3_anterior/
+/best/
+drive-download-*.zip
+Nuevo acceso directo.lnk
+*.pth
+*.onnx
+!placas/modelo/cct_xs_v2_global.onnx
+!placas/modelo/yolo-v9-t-384-license-plates-end2end.onnx
+*.apk
+*.aab
+*.mp4
+
+# Django estáticos compilados, media y BD local
+staticfiles/
+web/backend/media/
+db.sqlite3
+*.sqlite3
+movil/dist/
+
+# Datasets locales grandes (se gestionan en Roboflow / Drive, NO en Git)
+/coco-m3/
+/coco-m3-extra/
+/entrenamiento/datasets/
+/imagenes/
+
+# Archivos locales de referencia del aula virtual
+/*Laboratorio 3*.html
+/*Laboratorio 3*_files/
+/Manual_Laboratorio_3_Peaje.pdf
