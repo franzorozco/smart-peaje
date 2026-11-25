@@ -6,26 +6,26 @@ Sistema de control de peaje de punta a punta con visión por computadora (detecc
 
 ---
 
-## Equipo y Roles
+## Autor y Roles
 
 | Integrante | Rol | Responsabilidad |
 |---|---|---|
-| _Nombre Integrante 1_ | Modelos M2 / M3 | Datasets Roboflow y entrenamiento en Colab (`vehiculos.pt`, `ejes.pt`) |
-| _Nombre Integrante 2_ | Inferencia / M1 | Adaptador OCR, API FastAPI y despliegue GPU en RunPod |
-| _Nombre Integrante 3_ | Backend y Agente | API REST Django, PostgreSQL, Google Auth, Pusher y Agente |
-| _Nombre Integrante 4_ | Web y Móvil | Panel React en tiempo real y aplicación Android Expo + APK |
+| **Franz Jhostin Orozco Salazar** | Desarrollador Full-Stack e IA (Proyecto Individual) | Datasets Roboflow/Zenodo, entrenamiento M2/M3, integración M1/M4 (`pasajeros.pt`), API FastAPI en RunPod GPU, Backend Django + PostgreSQL + Google OAuth + Pusher + Agente IA en Render, Panel Web React y App Móvil Android (Expo EAS APK) |
 
 ---
 
-## Enlaces de Producción y Datasets
+## Enlaces de Producción, Entregables y Datasets
 
 - **Subdominio Web (HTTPS):** https://peaje-frontend.onrender.com
 - **Backend API (HTTPS):** https://peaje-backend.onrender.com/api/v1/
 - **Documentación API (Swagger UI):** https://peaje-backend.onrender.com/api/v1/docs/
-- **Endpoint de Inferencia (RunPod GPU):** https://2xo93oknug2ve3-8000.proxy.runpod.net/health
+- **Repositorio Git:** https://github.com/franzorozco/smart-peaje
+- **Carpeta de Evidencias (Google Drive):** https://drive.google.com/drive/folders/1nxYsQhm4sfrJEDrp_BQym_xJyRkb15CX?usp=sharing
+- **Endpoint de Inferencia (RunPod GPU):** configurado dinámicamente vía `INFERENCE_URL` en Render (puerto `8000` expuesto sobre proxy HTTPS de RunPod)
 - **Dataset M2 — Segmentación vehicular (Roboflow Universe):** [Vehicle Classification V2 (v1)](https://universe.roboflow.com/franz-orozco/vehicle-classification-v2-t9ukm/dataset/1)
 - **Dataset M3 — Original (Roboflow Universe):** [Vehicle Wheel Pose (`trafficanalyse`)](https://universe.roboflow.com/trafficanalyse/vehicle_wheel_pose)
 - **Dataset M3 — Complementario (USP / Zenodo):** [Truck Image Dataset v2.0.0](https://zenodo.org/records/7695824) — DOI: [10.5281/zenodo.7695824](https://doi.org/10.5281/zenodo.7695824) | Publicación: [arXiv:2204.01868](https://arxiv.org/abs/2204.01868) (licencia **CC BY 4.0**)
+- **Modelo M4 — Pasajeros (Ultralytics COCO 2017 Segmentation):** [COCO Segmentation (`YOLOv8n-seg`, clase `0: person`)](https://docs.ultralytics.com/datasets/segment/coco/)
 
 ---
 
@@ -118,11 +118,10 @@ npm ci
 
 ---
 
-## Dónde colocar los pesos entrenados (M2 y M3)
+## Dónde colocar los pesos entrenados (M2, M3 y M4)
 
-Cuando termines de entrenar en Google Colab:
-1. Descarga `vehiculos.pt` (M2, con clases `moto`, `auto`, `minibus`, `camion`, `bus`) y `ejes.pt` (M3, con 6 keypoints `eje_1`..`eje_6`).
-2. Colócalos en **`inferencia/modelos/vehiculos.pt`** y **`inferencia/modelos/ejes.pt`** (o define `M2_URL` y `M3_URL` para descargarlos con `python inferencia/descargar_modelos.py`).
+1. Coloca `vehiculos.pt` (M2, 5 clases: `moto`, `auto`, `minibus`, `camion`, `bus`), `ejes.pt` (M3, detección de llantas/ejes) y `pasajeros.pt` (M4, `YOLOv8n-seg` COCO `person` ID `0`) en **`inferencia/modelos/`**.
+2. También puedes definir `M2_URL`, `M3_URL` y `M4_URL` y ejecutar `python inferencia/descargar_modelos.py` (`pasajeros.pt` se descarga automáticamente desde el release oficial de Ultralytics si no existe).
 3. Estos archivos `.pt` están excluidos en `.gitignore` para no saturar Git.
 
 ---
